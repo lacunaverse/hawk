@@ -1,0 +1,83 @@
+form {
+    padding: 5px;
+    margin: 0.25em;
+    line-height: 16px;
+    min-width: 300px;
+}
+
+fieldset {
+    width: 100%;
+    padding: 5px 10px;
+    color: var(--quaternary);
+    border: 2px solid var(--tertiary);
+    border-radius: 4px;
+}
+
+legend {
+    color: var(--quaternary);
+    padding: 5px;
+}
+
+div label {
+    font-family: 'Consolas', monospace;
+    color: var(--quaternary);
+    display: block;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 0.25em 0;
+}
+
+form div {
+    margin: 0 0 0.5em 0;
+    max-width: 95%;
+}
+
+input,
+select {
+    padding: 5px 10px;
+    margin: 0.25em 0.25em 0.25em 0;
+    min-width: 90%;
+    max-width: 100%;
+}
+
+input[type='text'] {
+    background-color: var(--tertiary);
+    color: var(--quaternary);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 10pt;
+}
+
+input[type='text']:hover,
+input[type='text']:focus {
+    border: 1px solid var(--highlight);
+}
+
+select {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: var(--tertiary);
+    color: var(--quaternary);
+    font-size: 10pt;
+}
+
+select:focus,
+select:hover {
+    border: 1px solid var(--highlight);
+}
+
+input[type='submit'] {
+    background: var(--highlight);
+    color: var(--secondary);
+    font-size: 11pt;
+    padding: 5px 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+input[type='submit']:focus,
+input[type='submit']:hover {
+    opacity: 0.8;
+    transition: 100ms linear;
+}

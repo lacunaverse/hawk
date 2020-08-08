@@ -1,0 +1,60 @@
+:root {
+    --highlight: #5e81f0;
+    --primary: #fafafa;
+    --secondary: #232429;
+    --tertiary: #b9bec5;
+    --quaternary: #404040;
+
+    --nav-background: #e4e4e5;
+    --nav-background-secondary: #ecedee;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #232429;
+        --secondary: #fafafa;
+        --tertiary: #404040;
+        --quaternary: #b9bec5;
+        --nav-background: #1c1c20;
+        --nav-background-secondary: #28282b;
+    }
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    background-color: var(--primary);
+    color: var(--secondary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+    transition: 100ms linear;
+}
+
+.main {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    justify-content: flex-start;
+    align-content: center;
+
+    width: 100%;
+    height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        align-content: flex-start;
+        margin: 0 !important;
+    }
+}
+
+::-moz-selection {
+    background-color: var(--highlight);
+    color: var(--primary);
+}
+::selection {
+    background-color: var(--highlight);
+    color: var(--primary);
+}
