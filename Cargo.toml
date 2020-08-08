@@ -1,0 +1,14 @@
+[package]
+name = "hawk"
+version = "0.1.0"
+authors = ["EthanJustice <47954690+EthanJustice@users.noreply.github.com>"]
+edition = "2018"
+readme = "README.md"
+homepage = "https://github.com/EthanJustice/hawl"
+repository = "https://github.com/EthanJustice/hawk"
+license = "MIT"
+publish = false
+
+[dependencies]
+tui = { version = "~0.10", default-features = false, features = ['crossterm'] }
+crossterm = "~0.17.7"
