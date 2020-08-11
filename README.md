@@ -1,2 +1,3 @@
 # hawk
- quantified-self dashboard
+
+[quantified-self](https://en.wikipedia.org/wiki/Quantified_self) dashboard
