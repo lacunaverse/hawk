@@ -10,5 +10,5 @@ license = "MIT"
 publish = false
 
 [dependencies]
-tui = { version = "~0.10", default-features = false, features = ['crossterm'] }
-crossterm = "~0.17.7"
+rocket = "~0.4.5"
+rocket_contrib = "~0.4.5"
