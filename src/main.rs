@@ -1,9 +1,15 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+
 // std
-use std::io::*;
-use std::time::Duration;
 
 // external
+use rocket::*;
 
 fn main() {
-    
+    rocket::ignite()
+        .mount(
+            "/",
+            rocket_contrib::serve::StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/")),
+        )
+        .launch();
 }
