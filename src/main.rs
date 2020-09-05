@@ -15,7 +15,7 @@ fn main() {
     rocket::ignite()
         .mount(
             "/",
-            serve::StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/")),
+            serve::StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
         )
         .mount("/", routes![root])
         .attach(Template::fairing())
