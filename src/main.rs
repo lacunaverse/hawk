@@ -4,7 +4,7 @@
 
 // external
 use rocket::*;
-use rocket_contrib::{serve, templates::Template};
+use rocket_contrib::{serve::StaticFiles, templates::Template};
 
 #[get("/")]
 fn root() -> Result<Template, String> {
@@ -15,7 +15,7 @@ fn main() {
     rocket::ignite()
         .mount(
             "/",
-            serve::StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
+            StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
         )
         .mount("/", routes![root])
         .attach(Template::fairing())
