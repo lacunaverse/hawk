@@ -1,55 +1,35 @@
 // std
-use std::io::*;
-use std::time::Duration;
 
-// external
-use crossterm::{
-    cursor::{DisableBlinking, MoveTo},
-    event::{poll, read, EnableMouseCapture, Event},
-    execute, Result,
-};
-use tui::{
-    backend::CrosstermBackend, layout::*, style::*, symbols::*, text::*, widgets::*, Terminal,
-};
+// crates
+use actix_web::{middleware, web, App, HttpRequest, HttpServer, Responder};
 
-fn main() -> Result<()> {
-    let std = stdout();
+// local
 
-    let backend = CrosstermBackend::new(std);
+async fn serve_index(req: HttpRequest) -> impl Responder {
+    "Index"
+}
 
-    let mut terminal = Terminal::new(backend)?;
-    let _main = terminal.draw(|f| {
-        let chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .margin(1)
-            .constraints([Constraint::Percentage(10), Constraint::Percentage(50)].as_ref())
-            .split(f.size());
+async fn serve_add_metric(req: HttpRequest) -> impl Responder {
+    "Add metric"
+}
 
-        let block = Block::default().title("Views").borders(Borders::ALL);
+async fn serve_search(req: HttpRequest) -> impl Responder {
+    "Search"
+}
 
-        f.render_widget(block, chunks[0]);
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    pretty_env_logger::init();
 
-        let block = Block::default()
-            .title("")
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(Color::Cyan));
-
-        f.render_widget(block, chunks[1]);
-
-        let titles = ["Default", "Second"]
-            .iter()
-            .cloned()
-            .map(Spans::from)
-            .collect();
-
-        let tab = Tabs::new(titles)
-            .block(Block::default().title("Views").borders(Borders::ALL))
-            .style(Style::default().fg(Color::White))
-            .highlight_style(Style::default().fg(Color::LightGreen))
-            .divider(DOT);
-
-        f.render_widget(tab, chunks[0])
-    });
-
-    Ok(())
+    HttpServer::new(|| {
+        App::new()
+            .wrap(middleware::Logger::default())
+            .route("/", web::get().to(serve_index))
+            .route("/new/metric", web::get().to(serve_add_metric))
+            .route("/search", web::get().to(serve_search))
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
