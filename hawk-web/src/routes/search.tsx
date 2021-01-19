@@ -1,8 +1,8 @@
 import { Nav } from '../components/layouts/Nav';
 import '../main.css';
 
-export const ExportData = () => {
-    document.title = 'Export';
+export const Search = () => {
+    document.title = 'Search';
     return (
         <div>
             <Nav />

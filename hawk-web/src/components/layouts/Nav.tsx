@@ -8,8 +8,9 @@ export const Nav = () => {
             <Link to="/view">View</Link>
             <Link to="/log">Log</Link>
             <Link to="/metrics/new">New Metric</Link>
+            <Link to="/search">Search</Link>
             <Link to="/export">Export</Link>
             <Link to="/about">About</Link>
         </div>
     );
-}
+};
