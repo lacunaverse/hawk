@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum ExportFileType {
-    CSV,
-    HTML,
+    Json,
+    Html,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

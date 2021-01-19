@@ -22,7 +22,7 @@ class Index extends Component {
     render() {
         document.title = 'hawk';
         return (
-            <div>
+            <div className="main">
                 <Nav />
             </div>
         );

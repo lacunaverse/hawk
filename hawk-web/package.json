@@ -1,13 +1,12 @@
 {
-    "name": "neso",
+    "name": "hawk",
     "version": "0.0.1",
-    "description": "the hacker's calculator",
+    "description": "get a bird's eye view of you",
     "main": "index.js",
     "scripts": {
         "build": "webpack -p",
         "check": "tsc",
-        "lint": "tslint src/*.ts{,x} src/**/*.ts{,x}",
-        "start": "webpack-dev-server --inline"
+        "lint": "tslint src/*.ts{,x} src/**/*.ts{,x}"
     },
     "keywords": [],
     "author": "Contributors",
@@ -32,7 +31,6 @@
         "tslint": "^5.18.0",
         "typescript": "^3.5.3",
         "webpack": "4.37.0",
-        "webpack-cli": "^3.3.6",
-        "webpack-dev-server": "3.7.2"
+        "webpack-cli": "^3.3.6"
     }
 }

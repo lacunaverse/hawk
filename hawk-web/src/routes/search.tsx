@@ -4,7 +4,7 @@ import '../main.css';
 export const Search = () => {
     document.title = 'Search';
     return (
-        <div>
+        <div className="main">
             <Nav />
         </div>
     );
