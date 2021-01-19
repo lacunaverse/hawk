@@ -4,7 +4,9 @@
     --secondary: #232429;
     --tertiary: #b9bec5;
     --quaternary: #404040;
-    --nav-background: #eaebed;
+
+    --nav-background: #e4e4e5;
+    --nav-background-secondary: #ecedee;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,6 +16,7 @@
         --tertiary: #404040;
         --quaternary: #b9bec5;
         --nav-background: #1c1c20;
+        --nav-background-secondary: #28282b;
     }
 }
 

@@ -5,6 +5,8 @@ import { Nav } from './components/layouts/Nav';
 
 import { View } from './routes/view';
 import { Log } from './routes/log';
+import { Metrics } from './routes/metrics/metrics';
+import { EditMetrics } from './routes/metrics/edit';
 import { NewMetric } from './routes/metrics/new';
 import { ExportData } from './routes/export';
 import { Search } from './routes/search';
@@ -43,7 +45,9 @@ class App extends Component<any, any> {
                             <Route exact path="/" component={Index} />
                             <Route path="/view" component={View} />
                             <Route path="/log" component={Log} />
+                            <Route exact path="/metrics" component={Metrics} />
                             <Route exact path="/metrics/new" component={NewMetric} />
+                            <Route exact path="/metrics/edit" component={EditMetrics} />
                             <Route path="/export" component={ExportData} />
                             <Route path="/search" component={Search} />
                             <Route path="/about" component={About} />

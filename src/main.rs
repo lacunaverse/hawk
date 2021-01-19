@@ -22,10 +22,13 @@ async fn main() -> std::io::Result<()> {
             .route("/view", web::get().to(serve_index))
             .route("/export", web::get().to(serve_index))
             .route("/export", web::post().to(export))
+            .route("/metrics", web::get().to(serve_index))
+            .route("/metrics/edit", web::get().to(serve_index))
             .route("/metrics/new", web::get().to(serve_index))
             .route("/log", web::get().to(serve_index))
             .route("/search", web::get().to(serve_index))
             .route("/about", web::get().to(serve_index))
+            .route("/settings", web::get().to(serve_index))
             .service(
                 Files::new("/", concat!(env!("CARGO_MANIFEST_DIR"), "/hawk-web/dist"))
                     .prefer_utf8(true)

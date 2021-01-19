@@ -1,4 +1,5 @@
-.nav {
+.nav,
+.secondary-nav {
     display: flex;
     flex-flow: column;
 
@@ -7,8 +8,14 @@
     text-align: center;
 }
 
+.secondary-nav {
+    color: var(--secondary);
+    background-color: var(--nav-background-secondary) !important;
+}
+
 @media screen and (max-width: 768px) {
-    .nav {
+    .nav,
+    .secondary-nav {
         padding: 0 !important;
         margin: 0 !important;
         max-height: 2em;
