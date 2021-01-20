@@ -11,6 +11,7 @@ import { NewMetric } from './routes/metrics/new';
 import { ExportData } from './routes/export';
 import { Search } from './routes/search';
 import { About } from './routes/about';
+import { Settings } from './routes/settings';
 
 import './main.css';
 
@@ -51,6 +52,7 @@ class App extends Component<any, any> {
                             <Route path="/export" component={ExportData} />
                             <Route path="/search" component={Search} />
                             <Route path="/about" component={About} />
+                            <Route path="/settings" component={Settings} />
                         </Switch>
                     </Switch>
                 </BrowserRouter>

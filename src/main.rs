@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .route("/metrics", web::get().to(serve_index))
             .route("/metrics/edit", web::get().to(serve_index))
             .route("/metrics/new", web::get().to(serve_index))
+            .route("/metrics/new", web::post().to(add_new_metric))
             .route("/log", web::get().to(serve_index))
             .route("/search", web::get().to(serve_index))
             .route("/about", web::get().to(serve_index))
