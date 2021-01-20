@@ -20,6 +20,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .route("/", web::get().to(serve_index))
             .route("/view", web::get().to(serve_index))
+            .route("/view/compare", web::get().to(serve_index))
             .route("/export", web::get().to(serve_index))
             .route("/export", web::post().to(export))
             .route("/metrics", web::get().to(serve_index))

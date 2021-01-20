@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from 'inferno-router';
 
 import { Nav } from './components/layouts/Nav';
 
-import { View } from './routes/view';
+import { View } from './routes/view/view';
+import { Compare } from './routes/view/compare';
 import { Log } from './routes/log';
 import { Metrics } from './routes/metrics/metrics';
 import { EditMetrics } from './routes/metrics/edit';
@@ -45,6 +46,7 @@ class App extends Component<any, any> {
                         <Switch>
                             <Route exact path="/" component={Index} />
                             <Route path="/view" component={View} />
+                            <Route path="/view/compare" component={Compare} />
                             <Route path="/log" component={Log} />
                             <Route exact path="/metrics" component={Metrics} />
                             <Route exact path="/metrics/new" component={NewMetric} />
