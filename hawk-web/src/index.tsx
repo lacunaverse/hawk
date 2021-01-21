@@ -5,7 +5,7 @@ import { Nav } from './components/layouts/Nav';
 
 import { View } from './routes/view/view';
 import { Compare } from './routes/view/compare';
-import { Log } from './routes/log';
+import { Log } from './routes/log/log';
 import { Metrics } from './routes/metrics/metrics';
 import { EditMetrics } from './routes/metrics/edit';
 import { NewMetric } from './routes/metrics/new';

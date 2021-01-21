@@ -1,6 +1,6 @@
 import { Nav } from '../components/layouts/Nav';
 import '../main.css';
-import '../styles/thin.css';
+import '../components/styles/thin.css';
 
 export const About = () => {
     document.title = 'About';
