@@ -12,13 +12,13 @@
     "author": "Contributors",
     "license": "GPLv3",
     "dependencies": {
-        "inferno": "^7.2.0",
-        "inferno-router": "^7.4.6"
+        "inferno": "^7.4.7",
+        "inferno-router": "^7.4.7"
     },
     "devDependencies": {
         "@babel/core": "^7.5.5",
         "@babel/plugin-proposal-class-properties": "7.5.5",
-        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-env": "^7.12.11",
         "@babel/preset-typescript": "^7.3.3",
         "babel-loader": "^8.0.6",
         "babel-plugin-inferno": "^6",

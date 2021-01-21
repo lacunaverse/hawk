@@ -6,6 +6,7 @@
     background-color: var(--nav-background);
     height: 100%;
     text-align: center;
+    transition: none !important;
 }
 
 .secondary-nav {

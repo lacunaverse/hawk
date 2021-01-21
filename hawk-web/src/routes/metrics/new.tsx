@@ -1,8 +1,10 @@
 import { Component } from 'inferno';
 
 import { Nav } from '../../components/layouts/Nav';
-import '../../main.css';
 import { SecondaryNav } from './Nav';
+
+import '../../main.css';
+import '../../components/styles/forms.css';
 
 export const NewMetric = () => {
     document.title = 'New Metric';
@@ -111,14 +113,14 @@ class Form extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <fieldset>
-                    <legend>Create a New Metric</legend>
-                    <label>
-                        Name:
+                    <legend>New Metric</legend>
+                    <div>
+                        <label for="name">Name</label>
                         <input type="text" value={this.state.name} onInput={this.handleChange} />
-                    </label>
-                    <label>
-                        Frequency:
-                        <select onChange={this.handleFrequencyChange}>
+                    </div>
+                    <div>
+                        <label for="frequency">Frequency</label>
+                        <select id="frequency" onChange={this.handleFrequencyChange}>
                             <option value="hourly">Hourly</option>
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
@@ -128,7 +130,7 @@ class Form extends Component {
                             <option value="yearly">Yearly</option>
                             <option value="Custom">Custom</option>
                         </select>
-                    </label>
+                    </div>
                     <input type="submit" value="Create" />
                 </fieldset>
                 {this.state.error ? <p>{this.state.error}</p> : ''}
