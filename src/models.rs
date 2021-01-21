@@ -46,6 +46,8 @@ pub enum Frequency {
 pub struct NewMetricRequest {
     /// The name of the metric
     pub name: String,
+    /// Optional description of the metric
+    pub description: Option<String>,
     /// The type of the metric
     pub value_type: ValueType,
     /// The frequency for logging
