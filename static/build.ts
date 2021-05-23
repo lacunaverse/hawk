@@ -1,6 +1,6 @@
 require('esbuild')
     .build({
-        entryPoints: ['./src/index.ts'],
+        entryPoints: ['./src/index.ts', './src/metrics.ts'],
         bundle: true,
         outdir: 'dist/scripts/',
         minify: true,

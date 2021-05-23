@@ -8,14 +8,12 @@ Hawk is a tool to log data about yourself and make informed decisions off of it.
 
 ## Roadmap
 
-+ main API
-  + postgres
++ API
 + main functionality
 + exporting data
 + viewing data
   + data diffing (variance between intervals)
   + comparisons, ranges
-+ find file-watching solution for `hawk-web` builds
 
 ## Setup
 
@@ -24,18 +22,9 @@ Hawk is a tool to log data about yourself and make informed decisions off of it.
 Requirements:
 
 + [npm](https://www.npmjs.com/)
-+ [`cargo` + `rustc`](https://rustup.rs/)
++ [go]()
 
 Running:
-
-In one terminal:
-
-+ navigate to the `hawk-web/` directory
-+ run `npm run build`
-
-In another terminal:
-
-+ run `cargo run`
 
 ## Terminology
 
@@ -62,7 +51,6 @@ They have three criteria:
 + a type, to represent acceptable values for the metric
   + can be a true/false value, number, or text
 + a frequency, to determine how often a metric should be logged (daily, monthly, etc.)
++ optionally, a validator (regex)
 
 ## Credits
-
-+ [Heroicons](https://heroicons.dev/?query=data)
