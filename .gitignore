@@ -19,3 +19,7 @@ node_modules/
 dist/
 
 .env
+
+metrics.json
+
+logs.json
