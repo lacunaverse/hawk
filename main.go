@@ -71,7 +71,14 @@ func NewMetric(w http.ResponseWriter, r *http.Request) {
 }
 
 func Metrics(w http.ResponseWriter, r *http.Request) {
-	t.Render(w, "index.html", "", "metrics")
+	metrics, err := OpenMetricStore()
+
+	if err != nil {
+		t.Render(w, "index.html", "Couldn't load your metrics at the moment.", "metrics")
+		return
+	}
+
+	t.Render(w, "index.html", metrics, "metrics")
 }
 
 /// Index template data
