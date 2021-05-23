@@ -8,6 +8,10 @@
 <div>
     <h1>Metrics</h1>
     <h2>Your Metrics</h2>
+    {{if .Metrics.Metrics}}
+    <!-- todo: implement -->
+    <input type="search" placeholder="Search metrics" />
+    <input type="button" value="Refresh" />
     <table>
         <thead>
             <th>Name</th>
@@ -17,7 +21,7 @@
             <th></th>
         </thead>
         <tbody>
-            {{ range .Metrics }}
+            {{range .Metrics.Metrics}}
             <tr>
                 <td>{{ .Name }}</td>
                 <td>{{ .Type }}</td>
@@ -25,9 +29,15 @@
                 <td><a href="/logs/latest/{{.Name}}">Latest</a></td>
                 <td><a href="/metrics/edit/{{.Name}}">Edit</a></td>
             </tr>
-            {{ end }}
+            {{end}}
         </tbody>
     </table>
+    {{end}}
+
+    {{if .Error}}
+    <p>{{.Error}}</p>
+    {{end}}
+
     <h2>Add a New Metric</h2>
     <noscript>JavaScript is required to submit a new metric.</noscript>
     <form>

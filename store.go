@@ -10,24 +10,26 @@ type MetricType string
 
 const (
 	Text    MetricType = "text"
-	Boolean            = "boolean"
-	Number             = "number"
+	Boolean MetricType = "boolean"
+	Number  MetricType = "number"
 )
 
 type Frequency string
 
 const (
 	Daily    Frequency = "daily"
-	Weekly             = "weekly"
-	Biweekly           = "biweekly"
-	Monthly            = "monthly"
-	Yearly             = "yearly"
+	Weekly   Frequency = "weekly"
+	Biweekly Frequency = "biweekly"
+	Monthly  Frequency = "monthly"
+	Yearly   Frequency = "yearly"
 )
 
 type Metric struct {
 	Name      string
 	Type      MetricType
 	Frequency Frequency
+	/// Unix time stamp when initialized
+	Initialised int64
 }
 
 type MetricList struct {
@@ -49,6 +51,30 @@ func OpenMetricStore() (MetricList, error) {
 	}
 
 	return metrics, nil
+}
+
+func GetMetric(name string) (Metric, error) {
+	data, err := OpenMetricStore()
+
+	if err != nil {
+		return Metric{}, fmt.Errorf("failed to open file")
+	}
+
+	var metric Metric
+	var exists bool
+	for _, item := range data.Metrics {
+		if item.Name == metric.Name {
+			metric = item
+			exists = true
+			break
+		}
+	}
+
+	if exists {
+		return metric, nil
+	} else {
+		return Metric{}, nil
+	}
 }
 
 func WriteMetric(data MetricList) (bool, error) {

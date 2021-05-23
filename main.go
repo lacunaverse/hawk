@@ -53,6 +53,8 @@ func NewMetric(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&t)
 
+	t.Initialised = time.Now().Unix()
+
 	_, err := SaveMetric(t)
 	if err != nil {
 		// todo: better error responses
@@ -70,15 +72,36 @@ func NewMetric(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func EditMetric(w http.ResponseWriter, r *http.Request) {
+	metrics, err := GetMetric(mux.Vars(r)["name"])
+
+	if err != nil {
+		t.Render(w, "edit.html", "Couldn't load your metrics at the moment.", "metrics")
+		return
+	}
+
+	t.Render(w, "edit.html", metrics, "metrics")
+}
+
+type MetricResponse struct {
+	Metrics MetricList
+	Error   string
+}
+
 func Metrics(w http.ResponseWriter, r *http.Request) {
 	metrics, err := OpenMetricStore()
 
 	if err != nil {
-		t.Render(w, "index.html", "Couldn't load your metrics at the moment.", "metrics")
+		t.Render(w, "index.html", MetricResponse{Error: "Couldn't load your metrics at the moment."}, "metrics")
 		return
 	}
 
-	t.Render(w, "index.html", metrics, "metrics")
+	if len(metrics.Metrics) == 0 {
+		t.Render(w, "index.html", MetricResponse{Error: "You don't have any metrics at the moment."}, "metrics")
+		return
+	}
+
+	t.Render(w, "index.html", MetricResponse{Metrics: metrics}, "metrics")
 }
 
 /// Index template data
@@ -108,6 +131,7 @@ func main() {
 	r.HandleFunc("/", Index).Methods("GET")
 	r.HandleFunc("/metrics", Metrics).Methods("GET")
 	r.HandleFunc("/metrics/new", NewMetric).Methods("POST")
+	r.HandleFunc("/metrics/edit/{name}", EditMetric).Methods("GET")
 	r.HandleFunc("/export", Metrics).Methods("GET")
 	r.HandleFunc("/export", Metrics).Methods("POST")
 

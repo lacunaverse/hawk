@@ -56,7 +56,8 @@ submit.addEventListener('click', () => {
 
     Object.keys(forms).forEach((i) => document.body.querySelector(`#metric-${i}`)?.classList.remove('invalid'));
 
-    results.childNodes.forEach((i) => i.remove());
+    const removeResults = () => results.childNodes.forEach((i) => i.remove());
+    removeResults();
 
     const isValid = Object.values(forms).find((i) => i.length <= 0);
     if (isValid == undefined) {
@@ -95,6 +96,8 @@ submit.addEventListener('click', () => {
                 const close = icons.close;
                 close.classList.add('close-btn');
                 close.addEventListener('click', () => close.parentElement?.remove());
+
+                removeResults();
 
                 results.appendChild(
                     build(
