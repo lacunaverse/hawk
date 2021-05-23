@@ -7,6 +7,13 @@ const frequency = document.body.querySelector('#metric-frequency') as HTMLInputE
 const submit = document.body.querySelector('#metric-create') as HTMLInputElement;
 const results = document.body.querySelector('#results') as HTMLDivElement;
 
+const icons = {
+    error: document.body.querySelector('#error-icon')?.cloneNode(true) as HTMLElement,
+    close: document.body.querySelector('#close-icon')?.cloneNode(true) as HTMLElement,
+};
+
+Object.values(icons).forEach((i) => i.classList.remove('hidden'));
+
 (() => {
     const areValid: { [key: string]: boolean } = {
         name: false,
@@ -61,7 +68,7 @@ submit.addEventListener('click', () => {
         })
             .then((r) => {
                 if (r.status != 200) {
-                    throw r.statusText;
+                    throw r.status;
                 } else return r.json();
             })
             .then((_) => {
@@ -69,8 +76,36 @@ submit.addEventListener('click', () => {
 
                 results.appendChild(p);
             })
-            .catch((_) => {
-                results.appendChild(build('p', 'Something went wrong :(', build('p', 'Please try again.')));
+            .catch((err) => {
+                let errCode: string[] = ['', ''];
+                switch (err) {
+                    case 409: {
+                        errCode = [
+                            'A metric with that name already exists!',
+                            'Try renaming it and then submit it again.',
+                        ];
+                        break;
+                    }
+                    default:
+                        errCode = ['Something went wrong while trying to save the metric.', 'Please try again'];
+                }
+
+                results.classList.add('error');
+
+                const close = icons.close;
+                close.classList.add('close-btn');
+                close.addEventListener('click', () => close.parentElement?.remove());
+
+                results.appendChild(
+                    build(
+                        'p',
+                        {},
+                        close,
+                        ...errCode.map((i, idx) =>
+                            idx == 0 ? build('p', {}, icons.error, build('strong', i)) : build('p', i)
+                        )
+                    )
+                );
             });
     } else {
         Object.entries(forms).forEach(([key, value]) => {

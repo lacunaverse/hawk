@@ -54,3 +54,5 @@ They have three criteria:
 + optionally, a validator (regex)
 
 ## Credits
+
++ [Heroicons](https://heroicons.dev/)
