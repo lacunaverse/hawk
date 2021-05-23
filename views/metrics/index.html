@@ -14,6 +14,7 @@
             <th>Type</th>
             <th>Frequency</th>
             <th></th>
+            <th></th>
         </thead>
         <tbody>
             {{ range .Metrics }}
@@ -21,7 +22,8 @@
                 <td>{{ .Name }}</td>
                 <td>{{ .Type }}</td>
                 <td>{{ .Frequency }}</td>
-                <td>Edit</td>
+                <td><a href="/logs/latest/{{.Name}}">Latest</a></td>
+                <td><a href="/metrics/edit/{{.Name}}">Edit</a></td>
             </tr>
             {{ end }}
         </tbody>

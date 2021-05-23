@@ -261,6 +261,41 @@ details:target {
     box-shadow: 0 0 0 4px var(--senary);
 }
 
+table,
+thead,
+tbody {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    overflow: scroll;
+}
+
+thead {
+    border-bottom: 2px solid var(--senary);
+}
+
+th {
+    padding: 0.5rem;
+    font-weight: normal;
+    font-size: 14pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--tertiary);
+    background-color: var(--quaternary);
+}
+
+td {
+    color: var(--tertiary);
+    padding: 0.5rem;
+}
+
+tr:nth-child(even) {
+    background-color: var(--quaternary);
+}
+
+tr:last-child {
+    border-bottom: 2px solid var(--senary);
+}
+
 .hidden {
     display: none;
 }
