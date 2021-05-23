@@ -7,7 +7,24 @@
 <div>
     <h1>Metrics</h1>
     <h2>Your Metrics</h2>
-    <table></table>
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Frequency</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {{ range .Metrics }}
+            <tr>
+                <td>{{ .Name }}</td>
+                <td>{{ .Type }}</td>
+                <td>{{ .Frequency }}</td>
+                <td>Edit</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
     <h2>Add a New Metric</h2>
     <noscript>JavaScript is required to submit a new metric.</noscript>
     <form>
