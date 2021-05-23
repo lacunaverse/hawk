@@ -14,9 +14,10 @@ import (
 
 // Templates
 type Templates struct {
-	index   *template.Template
-	metrics *template.Template
-	errors  *template.Template
+	index       *template.Template
+	metrics     *template.Template
+	editMetrics *template.Template
+	errors      *template.Template
 }
 
 func (t *Templates) Render(w io.Writer, name string, data interface{}, cat string) error {
@@ -27,6 +28,8 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, cat strin
 		return t.errors.ExecuteTemplate(w, name, data)
 	case "metrics":
 		return t.metrics.ExecuteTemplate(w, name, data)
+	case "editMetrics":
+		return t.editMetrics.ExecuteTemplate(w, name, data)
 	default:
 		return t.errors.ExecuteTemplate(w, name, data)
 	}
@@ -41,9 +44,10 @@ func (n NotFound) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 var t = &Templates{
-	index:   template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/layouts/nav.html")),
-	metrics: template.Must(template.ParseFiles("views/layout.html", "views/metrics/index.html", "views/layouts/nav.html")),
-	errors:  template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
+	index:       template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/layouts/nav.html")),
+	metrics:     template.Must(template.ParseFiles("views/layout.html", "views/metrics/index.html", "views/layouts/nav.html")),
+	editMetrics: template.Must(template.ParseFiles("views/layout.html", "views/metrics/edit.html", "views/layouts/nav.html")),
+	errors:      template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
 }
 
 func NewMetric(w http.ResponseWriter, r *http.Request) {
@@ -72,15 +76,28 @@ func NewMetric(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type EditMetricResponse struct {
+	Metric Metric
+	Error  string
+}
+
 func EditMetric(w http.ResponseWriter, r *http.Request) {
-	metrics, err := GetMetric(mux.Vars(r)["name"])
+	metric, err := GetMetric(mux.Vars(r)["name"])
 
 	if err != nil {
-		t.Render(w, "edit.html", "Couldn't load your metrics at the moment.", "metrics")
+		t.Render(w, "edit.html", EditMetricResponse{Error: "Couldn't load your metrics at the moment."}, "editMetrics")
 		return
 	}
 
-	t.Render(w, "edit.html", metrics, "metrics")
+	println(metric.Name)
+	if len(metric.Name) == 0 {
+		w.WriteHeader(404)
+		t.Render(w, "404.html", "", "errors")
+
+		return
+	}
+
+	t.Render(w, "edit.html", EditMetricResponse{Metric: metric}, "editMetrics")
 }
 
 type MetricResponse struct {
