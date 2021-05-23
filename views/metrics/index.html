@@ -1,10 +1,40 @@
 {{define "static"}}
-<script src="/static/index.js" defer type="module"></script>
+<script src="/static/scripts/metrics.js" defer type="module"></script>
 {{end}}
 
 {{template "layout" .}}
 {{define "content"}}
 <div>
     <h1>Metrics</h1>
+    <h2>Your Metrics</h2>
+    <table></table>
+    <h2>Add a New Metric</h2>
+    <noscript>JavaScript is required to submit a new metric.</noscript>
+    <form>
+        <label for="metric-name">Metric name <a href="">?</a></label>
+        <input id="metric-name" type="text" placeholder="Running, weight, etc." pattern="[a-zA-Z0-9]{3,256}" />
+
+        <fieldset>
+            <legend>Metric information</legend>
+            <label for="metric-type">Metric type <a href="">?</a></label>
+            <select id="metric-type">
+                <option value="text">Text</option>
+                <option value="boolean">True/False</option>
+                <option selected value="number">Number</option>
+            </select>
+            <label for="metric-frequency">Logging frequency <a href="">?</a></label>
+            <select id="metric-frequency">
+                <option selected value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Biweekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+                <option value="custom" disabled>Custom</option>
+            </select>
+        </fieldset>
+
+        <input id="metric-create" type="button" value="Create" disabled />
+    </form>
+    <div id="results"></div>
 </div>
 {{end}}

@@ -35,6 +35,7 @@ type NotFound struct {
 }
 
 func (n NotFound) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(404)
 	t.Render(w, "404.html", "", "errors")
 }
 
