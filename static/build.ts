@@ -2,7 +2,7 @@ require('esbuild')
     .build({
         entryPoints: ['./src/index.ts'],
         bundle: true,
-        outfile: 'dist/index.js',
+        outdir: 'dist/scripts/',
         minify: true,
         sourcemap: true,
         treeShaking: true,
@@ -15,7 +15,7 @@ require('esbuild')
     .build({
         entryPoints: ['./src/index.css'],
         bundle: true,
-        outfile: 'dist/index.css',
+        outdir: 'dist/styles/',
         minify: true,
         treeShaking: true,
         watch: true,
