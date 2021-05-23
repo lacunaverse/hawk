@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
@@ -45,6 +46,30 @@ var t = &Templates{
 	errors:  template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
 }
 
+func NewMetric(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var t Metric
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&t)
+
+	_, err := SaveMetric(t)
+	if err != nil {
+		// todo: better error responses
+		switch err.Error() {
+		case "already exists":
+			w.WriteHeader(http.StatusConflict)
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+
+		fmt.Fprintf(w, `{"status":"write failed"}`)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, `{"status": "ok"}`)
+	}
+}
+
 func Metrics(w http.ResponseWriter, r *http.Request) {
 	t.Render(w, "index.html", "", "metrics")
 }
@@ -67,12 +92,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	Init()
+
 	r := mux.NewRouter()
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/dist")))).Methods("GET")
 
 	r.HandleFunc("/", Index).Methods("GET")
 	r.HandleFunc("/metrics", Metrics).Methods("GET")
+	r.HandleFunc("/metrics/new", NewMetric).Methods("POST")
 	r.HandleFunc("/export", Metrics).Methods("GET")
 	r.HandleFunc("/export", Metrics).Methods("POST")
 
