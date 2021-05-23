@@ -1,0 +1,45 @@
+.results {
+    min-height: 300px;
+    width: 100%;
+}
+
+.results p {
+    margin: 0;
+}
+
+svg,
+.results p strong {
+    margin: 0 0.5em;
+    height: 2rem;
+    width: 2rem;
+    stroke: var(--primary);
+    vertical-align: middle;
+}
+
+.error {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    text-align: center;
+    background-color: var(--yellow);
+    color: var(--primary);
+}
+
+.close-btn {
+    font-size: 24pt;
+    cursor: pointer;
+
+    position: fixed;
+    top: 0.25em;
+    right: 1em;
+}
+
+@media screen and (max-width: 768px) {
+    .close-btn {
+        position: relative;
+        top: auto;
+        right: auto;
+    }
+}
