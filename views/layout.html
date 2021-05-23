@@ -1,0 +1,25 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>hawk</title>
+        <link rel="stylesheet" type="text/css" href="/static/styles/index.css" />
+        <link rel="shortcut icon" type="image/x-icon"
+            href="data:image/svg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkmL/9PwAEVAJXqEEVDwAAAABJRU5ErkJggg==" />
+    </head>
+
+    <body>
+        <div class="centered">
+            {{template "nav"}}
+            {{block "content" .}}{{end}}
+            {{template "footer"}}
+        </div>
+        {{block "static" .}}{{end}}
+        {{template "nav-static"}}
+    </body>
+
+</html>
+{{end}}

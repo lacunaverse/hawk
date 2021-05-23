@@ -35,12 +35,12 @@ func (n NotFound) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 var t = &Templates{
 	index:  template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/layouts/nav.html")),
-	errors: template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
+	errors: template.Must(template.ParseFiles("views/errors/404.html")),
 }
 
 // Index root route
 func Index(w http.ResponseWriter, r *http.Request) {
-	t.Render(w, "index.html", "", "index")
+	t.Render(w, "layout.html", "", "index")
 }
 
 func main() {
