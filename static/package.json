@@ -16,5 +16,6 @@
     "scripts": {
         "test": "jest",
         "build": "node ./build.ts"
-    }
+    },
+    "dependencies": {}
 }
