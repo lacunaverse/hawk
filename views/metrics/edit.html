@@ -1,0 +1,56 @@
+{{define "static"}}
+<script src="/static/scripts/metrics-edit.js" defer type="module"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/metrics.css" />
+{{end}}
+
+{{template "layout" .}}
+{{define "content"}}
+<div>
+    {{if .Metric.Name}}
+    <h1>Edit {{.Metric.Name}}</h1>
+    <div id="data" hidden data-name="{{.Metric.Name}}" data-type="{{.Metric.Type}}"
+        data-frequency="{{.Metric.Frequency}}"></div>
+    <noscript>JavaScript is required to submit a new metric.</noscript>
+    <form>
+        <label for="metric-name">Metric name <a href="">?</a></label>
+        <input id="metric-name" type="text" placeholder="Running, weight, etc." pattern="[a-zA-Z0-9]{3,256}" />
+
+        <fieldset>
+            <legend>Metric information</legend>
+            <label for="metric-type">Metric type <a href="">?</a></label>
+            <select id="metric-type">
+                <option value="text">Text</option>
+                <option value="boolean">True/False</option>
+                <option value="number">Number</option>
+            </select>
+            <label for="metric-frequency">Logging frequency <a href="">?</a></label>
+            <select id="metric-frequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Biweekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+                <option value="custom" disabled>Custom</option>
+            </select>
+        </fieldset>
+
+        <input id="metric-create" type="button" value="Edit" disabled />
+    </form>
+    <div id="results">
+        <svg class="hidden" id="error-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <svg class="hidden" id="close-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </div>
+    {{end}}
+
+    {{if .Error}}
+    <p>{{.Error}}</p>
+    {{end}}
+</div>
+{{end}}

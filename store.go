@@ -25,11 +25,11 @@ const (
 )
 
 type Metric struct {
-	Name      string
-	Type      MetricType
-	Frequency Frequency
+	Name      string     `json:"name"`
+	Type      MetricType `json:"type"`
+	Frequency Frequency  `json:"frequency"`
 	/// Unix time stamp when initialized
-	Initialised int64
+	Initialised int64 `json:"initialised"`
 }
 
 type MetricList struct {
@@ -63,17 +63,19 @@ func GetMetric(name string) (Metric, error) {
 	var metric Metric
 	var exists bool
 	for _, item := range data.Metrics {
-		if item.Name == metric.Name {
+		if item.Name == name {
 			metric = item
 			exists = true
 			break
 		}
 	}
 
+	fmt.Println(metric)
+
 	if exists {
 		return metric, nil
 	} else {
-		return Metric{}, nil
+		return Metric{}, fmt.Errorf("not found")
 	}
 }
 
