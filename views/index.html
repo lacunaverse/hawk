@@ -1,5 +1,5 @@
 {{define "static"}}
-<script src="/static/index.js" defer type="module"></script>
+<script src="/static/scripts/index.js" defer type="module"></script>
 {{end}}
 
 {{template "layout" .}}
@@ -7,10 +7,25 @@
 <div>
     <h1>{{.Date}}</h1>
     {{if .NeedsLogging}}
-    {{range .NeedsLogging}}
-
-    {{end}}
-    <input type="button" value="Save" />
+    <input type="search" placeholder="Search metrics" />
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {{range .NeedsLogging}}
+            <tr>
+                <td>{{ .Name }}</td>
+                <td>{{ .Description }}</td>
+                <td data-type="{{.Type}}" data-validator=""></td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    <input type="button" value="Save" id="save-btn" />
+    <div class="results"></div>
     {{else}}
     <p>Nothing to log right now. Check back later!</p>
     {{end}}
