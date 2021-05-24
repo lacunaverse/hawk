@@ -2,6 +2,7 @@ import { build } from './util';
 
 // create a new metric
 const name = document.body.querySelector('#metric-name') as HTMLInputElement;
+const description = document.body.querySelector('#metric-description') as HTMLInputElement;
 const type = document.body.querySelector('#metric-type') as HTMLInputElement;
 const frequency = document.body.querySelector('#metric-frequency') as HTMLInputElement;
 const submit = document.body.querySelector('#metric-create') as HTMLInputElement;
@@ -17,6 +18,7 @@ Object.values(icons).forEach((i) => i.classList.remove('hidden'));
 (() => {
     const areValid: { [key: string]: boolean } = {
         name: false,
+        description: false,
         type: false,
         frequency: false,
     };
@@ -35,8 +37,11 @@ Object.values(icons).forEach((i) => i.classList.remove('hidden'));
         }
     }
 
+    validate.call(name);
+
     const forms = {
         name: name.value,
+        description: description.value,
         type: type.value,
         frequency: frequency.value,
     };
@@ -50,6 +55,7 @@ Object.values(icons).forEach((i) => i.classList.remove('hidden'));
 submit.addEventListener('click', () => {
     const forms = {
         name: name.value,
+        description: description.value,
         type: type.value,
         frequency: frequency.value,
     };
