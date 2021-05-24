@@ -15,6 +15,7 @@
     <table>
         <thead>
             <th>Name</th>
+            <th>Description</th>
             <th>Type</th>
             <th>Frequency</th>
             <th></th>
@@ -24,6 +25,7 @@
             {{range .Metrics.Metrics}}
             <tr>
                 <td>{{ .Name }}</td>
+                <td>{{ .Description }}</td>
                 <td>{{ .Type }}</td>
                 <td>{{ .Frequency }}</td>
                 <td><a href="/logs/latest/{{.Name}}">Latest</a></td>
@@ -41,18 +43,24 @@
     <h2>Add a New Metric</h2>
     <noscript>JavaScript is required to submit a new metric.</noscript>
     <form>
-        <label for="metric-name">Metric name <a href="">?</a></label>
+        <label for="metric-name">Name <a href="">?</a></label>
         <input id="metric-name" type="text" placeholder="Running, weight, etc." pattern="[a-zA-Z0-9]{3,256}" />
 
         <fieldset>
             <legend>Metric information</legend>
-            <label for="metric-type">Metric type <a href="">?</a></label>
+
+            <label for="metric-description">Description <a href="">?</a></label>
+            <input id="metric-description" type="text" placeholder="Distance run, how much I weighed, etc."
+                pattern="[a-zA-Z0-9]{3,256}" />
+
+            <label for="metric-type">Type <a href="">?</a></label>
             <select id="metric-type">
                 <option value="text">Text</option>
                 <option value="boolean">True/False</option>
                 <option selected value="number">Number</option>
             </select>
-            <label for="metric-frequency">Logging frequency <a href="">?</a></label>
+            <label for="metric-frequency">Frequency <a href="">?</a></label>
+
             <select id="metric-frequency">
                 <option selected value="daily">Daily</option>
                 <option value="weekly">Weekly</option>

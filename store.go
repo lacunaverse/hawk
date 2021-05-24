@@ -40,9 +40,10 @@ const (
 )
 
 type Metric struct {
-	Name      string     `json:"name"`
-	Type      MetricType `json:"type"`
-	Frequency Frequency  `json:"frequency"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Type        MetricType `json:"type"`
+	Frequency   Frequency  `json:"frequency"`
 	/// Unix time stamp when initialized
 	Initialised int64 `json:"initialised"`
 	LastLog     int64 `json:"lastLog"`
