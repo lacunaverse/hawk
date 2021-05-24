@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 type MetricType string
@@ -133,9 +134,11 @@ func SaveLog() {
 /// unimplemented at the moment
 /// todo: implement
 func Init() {
-	_, err := ioutil.ReadFile("./metrics.json")
+	inits := []string{`{"metrics": []}`, `{}`}
 
-	if err != nil {
-
+	for idx, x := range []string{"./metrics.json", "./logs.json"} {
+		if _, err := os.Stat(x); os.IsNotExist(err) {
+			ioutil.WriteFile(x, []byte(inits[idx]), 0644)
+		}
 	}
 }

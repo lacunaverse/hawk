@@ -89,7 +89,6 @@ func EditMetric(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	println(metric.Name)
 	if len(metric.Name) == 0 {
 		w.WriteHeader(404)
 		t.Render(w, "404.html", "", "errors")
@@ -114,7 +113,7 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(metrics.Metrics) == 0 {
-		t.Render(w, "index.html", MetricResponse{Error: "You don't have any metrics at the moment."}, "metrics")
+		t.Render(w, "index.html", MetricResponse{Error: "You don't have any metrics at the moment. Try creating some using the form below."}, "metrics")
 		return
 	}
 
