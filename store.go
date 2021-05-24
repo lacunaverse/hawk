@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 type MetricType string
@@ -25,12 +26,26 @@ const (
 	Yearly   Frequency = "yearly"
 )
 
+type FrequencySeconds uint64
+
+const (
+	// actual value is 86400, 1 is used for testing
+	DailySeconds    FrequencySeconds = 1
+	WeeklySeconds   FrequencySeconds = 604800
+	BiweeklySeconds FrequencySeconds = 1209600
+	// assuming 30 days in a month
+	MonthlySeconds FrequencySeconds = 2592000
+	// 365.2425 days
+	YearlySeconds FrequencySeconds = 31556952
+)
+
 type Metric struct {
 	Name      string     `json:"name"`
 	Type      MetricType `json:"type"`
 	Frequency Frequency  `json:"frequency"`
 	/// Unix time stamp when initialized
 	Initialised int64 `json:"initialised"`
+	LastLog     int64 `json:"lastLog"`
 }
 
 type MetricList struct {
@@ -70,8 +85,6 @@ func GetMetric(name string) (Metric, error) {
 			break
 		}
 	}
-
-	fmt.Println(metric)
 
 	if exists {
 		return metric, nil
@@ -115,6 +128,8 @@ func SaveMetric(metric Metric) (bool, error) {
 		return false, fmt.Errorf("already exists")
 	}
 
+	metric.LastLog = time.Now().Unix()
+
 	data.Metrics = append(data.Metrics, metric)
 
 	_, err = WriteMetric(data)
@@ -138,6 +153,8 @@ func Init() {
 
 	for idx, x := range []string{"./metrics.json", "./logs.json"} {
 		if _, err := os.Stat(x); os.IsNotExist(err) {
+			ioutil.WriteFile(x, []byte(inits[idx]), 0644)
+		} else if data, _ := ioutil.ReadFile(x); len(data) == 0 {
 			ioutil.WriteFile(x, []byte(inits[idx]), 0644)
 		}
 	}
