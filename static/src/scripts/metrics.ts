@@ -37,7 +37,9 @@ Object.values(icons).forEach((i) => i.classList.remove('hidden'));
         }
     }
 
-    validate.call(name);
+    Object.keys(areValid).forEach((i) =>
+        validate.call(document.body.querySelector(`#metric-${i}`) as HTMLInputElement)
+    );
 
     const forms = {
         name: name.value,

@@ -120,6 +120,19 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 	t.Render(w, "index.html", MetricResponse{Metrics: metrics}, "metrics")
 }
 
+type PartialMetric struct {
+	Name         string      `json:"name"`
+	UpdatedValue interface{} `json:"updatedValue"`
+}
+
+func Log(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var t []PartialMetric
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&t)
+}
+
 /// Index template data
 type IndexData struct {
 	Date         string
@@ -175,6 +188,7 @@ func main() {
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/dist")))).Methods("GET")
 
 	r.HandleFunc("/", Index).Methods("GET")
+	r.HandleFunc("/log", Log).Methods("POST")
 	r.HandleFunc("/metrics", Metrics).Methods("GET")
 	r.HandleFunc("/metrics/new", NewMetric).Methods("POST")
 	r.HandleFunc("/metrics/edit/{name}", EditMetric).Methods("GET")
