@@ -122,7 +122,9 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 
 /// Index template data
 type IndexData struct {
-	Date string
+	Date         string
+	NeedsLogging []Metric
+	Error        string
 }
 
 // Index root route
@@ -134,7 +136,35 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	date := fmt.Sprintf("%s, %v %s", weekday, day, month)
 
-	t.Render(w, "index.html", IndexData{Date: date}, "index")
+	metrics, err := OpenMetricStore()
+
+	if err != nil {
+		t.Render(w, "index.html", IndexData{Date: date, Error: "Failed to get metrics that need logging."}, "index")
+	}
+
+	var needsLogging []Metric
+
+	for _, item := range metrics.Metrics {
+		var duration FrequencySeconds
+		switch item.Frequency {
+		case "daily":
+			duration = DailySeconds
+		case "weekly":
+			duration = WeeklySeconds
+		case "biweekly":
+			duration = BiweeklySeconds
+		case "monthly":
+			duration = MonthlySeconds
+		case "yearly":
+			duration = YearlySeconds
+		}
+
+		if (time.Unix() - item.LastLog) >= int64(duration) {
+			needsLogging = append(needsLogging, item)
+		}
+	}
+
+	t.Render(w, "index.html", IndexData{Date: date, NeedsLogging: needsLogging}, "index")
 }
 
 func main() {

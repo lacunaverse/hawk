@@ -6,5 +6,11 @@
 {{define "content"}}
 <div>
     <h1>{{.Date}}</h1>
+    {{if .NeedsLogging}}
+    {{range .NeedsLogging}}
+    {{end}}
+    {{else}}
+    <p>Nothing to log right now. Check back later!</p>
+    {{end}}
 </div>
 {{end}}
