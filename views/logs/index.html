@@ -1,0 +1,30 @@
+{{define "static"}}
+{{end}}
+
+{{template "layout" .}}
+{{define "content"}}
+<div>
+    <h1>{{.Logs.Name}}</h1>
+    {{if .Logs}}
+    <label for="search-box">Search logs <a href="">?</a></label>
+    <input type="search" placeholder="Running, :bool, etc." id="search-box" />
+    <input type="button" value="Refresh" id="refresh-btn" />
+    <table>
+        <thead>
+            <th>Value</th>
+            <th>Logged At</th>
+        </thead>
+        <tbody>
+            {{range .Logs.Logs}}
+            <tr>
+                <td>{{ .Value }}</td>
+                <td>{{ .StoredAt }}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Couldn't load the latest data.</p>
+    {{end}}
+</div>
+{{end}}

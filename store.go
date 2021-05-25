@@ -173,7 +173,7 @@ func AddMetricToLog(metric string) (bool, error) {
 		return false, err
 	}
 
-	data.Records = append(data.Records, RecordList{Name: metric})
+	data.Records = append(data.Records, RecordList{Name: metric, Logs: []Record{}})
 
 	_, err = WriteLog(data)
 
@@ -264,9 +264,23 @@ func SaveLog(metrics []PartialMetric) (bool, error) {
 	return true, nil
 }
 
+func GetLog(log string) (RecordList, error) {
+	data, err := OpenLog()
+
+	if err != nil {
+		return RecordList{}, err
+	}
+
+	for _, item := range data.Records {
+		if item.Name == log {
+			return item, nil
+		}
+	}
+
+	return RecordList{}, fmt.Errorf("not found")
+}
+
 /// Bootstraps storage
-/// unimplemented at the moment
-/// todo: implement
 func Init() {
 	inits := []string{`{"metrics": []}`, `{"records": []}`}
 
