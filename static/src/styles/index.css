@@ -278,14 +278,18 @@ th {
     padding: 0.5rem;
     font-weight: normal;
     font-size: 14pt;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--tertiary);
     background-color: var(--quaternary);
 }
 
 td {
+    font-size: 1.12rem;
     color: var(--tertiary);
-    padding: 0.5rem;
+    padding: 0.25rem;
+}
+
+td input {
+    padding: 0.5rem 0 0.5rem 1rem;
 }
 
 tr:nth-child(even) {
