@@ -15,6 +15,7 @@ import (
 // Templates
 type Templates struct {
 	index       *template.Template
+	logs        *template.Template
 	metrics     *template.Template
 	editMetrics *template.Template
 	errors      *template.Template
@@ -24,6 +25,8 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, cat strin
 	switch cat {
 	case "index":
 		return t.index.ExecuteTemplate(w, name, data)
+	case "logs":
+		return t.logs.ExecuteTemplate(w, name, data)
 	case "errors":
 		return t.errors.ExecuteTemplate(w, name, data)
 	case "metrics":
@@ -45,6 +48,7 @@ func (n NotFound) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 var t = &Templates{
 	index:       template.Must(template.ParseFiles("views/layout.html", "views/index.html", "views/layouts/nav.html")),
+	logs:        template.Must(template.ParseFiles("views/layout.html", "views/logs/index.html", "views/layouts/nav.html")),
 	metrics:     template.Must(template.ParseFiles("views/layout.html", "views/metrics/index.html", "views/layouts/nav.html")),
 	editMetrics: template.Must(template.ParseFiles("views/layout.html", "views/metrics/edit.html", "views/layouts/nav.html")),
 	errors:      template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
@@ -118,6 +122,36 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.Render(w, "index.html", MetricResponse{Metrics: metrics}, "metrics")
+}
+
+type ViewLatestResponse struct {
+	Logs  RecordList
+	Error string
+}
+
+func ViewLatest(w http.ResponseWriter, r *http.Request) {
+	logs, err := GetLog(mux.Vars(r)["name"])
+
+	if err != nil {
+		switch err.Error() {
+		case "not found":
+			w.WriteHeader(404)
+			t.Render(w, "404.html", "", "errors")
+		default:
+			t.Render(w, "index.html", ViewLatestResponse{Error: "Couldn't load your metrics at the moment."}, "logs")
+		}
+
+		return
+	}
+
+	if len(logs.Name) == 0 {
+		w.WriteHeader(404)
+		t.Render(w, "404.html", "", "errors")
+
+		return
+	}
+
+	t.Render(w, "index.html", ViewLatestResponse{Logs: logs}, "logs")
 }
 
 type PartialMetric struct {
@@ -204,6 +238,7 @@ func main() {
 
 	r.HandleFunc("/", Index).Methods("GET")
 	r.HandleFunc("/log", Log).Methods("POST")
+	r.HandleFunc("/logs/latest/{name}", ViewLatest).Methods("GET")
 	r.HandleFunc("/metrics", Metrics).Methods("GET")
 	r.HandleFunc("/metrics/new", NewMetric).Methods("POST")
 	r.HandleFunc("/metrics/edit/{name}", EditMetric).Methods("GET")
