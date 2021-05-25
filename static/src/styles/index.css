@@ -131,6 +131,7 @@ nav {
 }
 
 nav a,
+nav a:visited,
 footer a {
     font-size: 13px;
     opacity: 0.7;
@@ -153,6 +154,7 @@ nav:first-child {
 }
 
 nav a,
+nav a:visited,
 footer a {
     color: var(--tertiary);
     text-decoration: none;

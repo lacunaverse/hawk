@@ -10,7 +10,8 @@
     <h2>Your Metrics</h2>
     {{if .Metrics.Metrics}}
     <!-- todo: implement -->
-    <input type="search" placeholder="Search metrics" />
+    <label for="search-box">Search metrics <a href="">?</a></label>
+    <input type="search" placeholder="Running, :bool, etc." id="search-box" />
     <input type="button" value="Refresh" />
     <table>
         <thead>
