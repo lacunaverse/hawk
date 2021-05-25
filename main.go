@@ -125,20 +125,51 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 }
 
 type ViewLatestResponse struct {
-	Logs  RecordList
-	Error string
+	Logs  RecordList `json:"logs"`
+	Error string     `json:"error"`
+}
+
+func sendError(w http.ResponseWriter, errorText string) {
+	w.Header().Add("content-type", "application/json")
+	json, err := json.Marshal(ViewLatestResponse{Error: errorText})
+	if err != nil {
+		w.WriteHeader(500)
+		fmt.Fprintf(w, `{"status": "something went wrong"}`)
+		return
+	}
+
+	fmt.Fprint(w, string(json))
 }
 
 func ViewLatest(w http.ResponseWriter, r *http.Request) {
 	logs, err := GetLog(mux.Vars(r)["name"])
 
+	content := r.Header.Get("content-type")
+
+	var isJson bool
+
+	if content == "application/json" {
+		isJson = true
+	} else {
+		isJson = false
+	}
+
 	if err != nil {
 		switch err.Error() {
 		case "not found":
 			w.WriteHeader(404)
-			t.Render(w, "404.html", "", "errors")
+			if !isJson {
+				t.Render(w, "404.html", "", "errors")
+			} else {
+				sendError(w, "not found")
+			}
 		default:
-			t.Render(w, "index.html", ViewLatestResponse{Error: "Couldn't load your metrics at the moment."}, "logs")
+			w.WriteHeader(500)
+			if !isJson {
+				t.Render(w, "index.html", ViewLatestResponse{Error: "Couldn't load your metrics at the moment."}, "logs")
+			} else {
+				sendError(w, "something went wrong")
+			}
 		}
 
 		return
@@ -146,12 +177,28 @@ func ViewLatest(w http.ResponseWriter, r *http.Request) {
 
 	if len(logs.Name) == 0 {
 		w.WriteHeader(404)
-		t.Render(w, "404.html", "", "errors")
+		if !isJson {
+			t.Render(w, "404.html", "", "errors")
+		} else {
+			sendError(w, "not found")
+		}
 
 		return
 	}
 
-	t.Render(w, "index.html", ViewLatestResponse{Logs: logs}, "logs")
+	if !isJson {
+		t.Render(w, "index.html", ViewLatestResponse{Logs: logs}, "logs")
+	} else {
+		w.Header().Add("content-type", "application/json")
+		json, err := json.Marshal(ViewLatestResponse{Logs: logs})
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprintf(w, `{"status": "something went wrong"}`)
+			return
+		}
+
+		fmt.Fprint(w, string(json))
+	}
 }
 
 type PartialMetric struct {

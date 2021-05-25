@@ -22,7 +22,7 @@ Hawk is a tool to log data about yourself and make informed decisions off of it.
 Requirements:
 
 + [npm](https://www.npmjs.com/)
-+ [go]()
++ [go](https://golang.org/)
 
 Running:
 
