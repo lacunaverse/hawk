@@ -7,7 +7,8 @@
 <div>
     <h1>{{.Date}}</h1>
     {{if .NeedsLogging}}
-    <input type="search" placeholder="Search metrics" />
+    <label for="search-box">Search logs <a href="">?</a></label>
+    <input type="search" placeholder="Running, :bool, etc." id="search-box" />
     <table>
         <thead>
             <th>Name</th>
