@@ -43,10 +43,12 @@ type Metric struct {
 	Name        string     `json:"name"`
 	Description string     `json:"description"`
 	Type        MetricType `json:"type"`
-	Frequency   Frequency  `json:"frequency"`
+	/// Frequency of logging
+	Frequency Frequency `json:"frequency"`
 	/// Unix time stamp when initialized
 	Initialised int64 `json:"initialised"`
-	LastLog     int64 `json:"lastLog"`
+	/// Time since item was last logged
+	LastLog int64 `json:"lastLog"`
 }
 
 type MetricList struct {
@@ -133,7 +135,16 @@ func SaveMetric(metric Metric) (bool, error) {
 
 	data.Metrics = append(data.Metrics, metric)
 
+	present, err := MetricIsPresentInLog(metric.Name)
+	if err != nil {
+		return false, err
+	}
+
 	_, err = WriteMetric(data)
+
+	if !present {
+		AddMetricToLog(metric.Name)
+	}
 
 	if err != nil {
 		return false, err
@@ -142,15 +153,122 @@ func SaveMetric(metric Metric) (bool, error) {
 	return true, nil
 }
 
-func SaveLog() {
+type Record struct {
+	Value    string `json:"value"`
+	StoredAt int64  `json:"storedAt"`
+}
 
+type RecordList struct {
+	Name string   `json:"name"`
+	Logs []Record `json:"logs"`
+}
+
+type RecordStore struct {
+	Records []RecordList `json:"records"`
+}
+
+func AddMetricToLog(metric string) (bool, error) {
+	data, err := OpenLog()
+	if err != nil {
+		return false, err
+	}
+
+	data.Records = append(data.Records, RecordList{Name: metric})
+
+	_, err = WriteLog(data)
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func WriteLog(data RecordStore) (bool, error) {
+	json, err := json.Marshal(data)
+
+	if err != nil {
+		return false, err
+	}
+
+	err = ioutil.WriteFile("./logs.json", json, 0644)
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func MetricIsPresentInLog(metric string) (bool, error) {
+	data, err := OpenLog()
+
+	if err != nil {
+		return false, err
+	}
+
+	for _, x := range data.Records {
+		if x.Name == metric {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func OpenLog() (RecordStore, error) {
+	data, err := ioutil.ReadFile("./logs.json")
+
+	if err != nil {
+		return RecordStore{}, err
+	}
+
+	var records RecordStore
+
+	err = json.Unmarshal(data, &records)
+	if err != nil {
+		return RecordStore{}, err
+	}
+
+	return records, nil
+}
+
+func SaveLog(metrics []PartialMetric) (bool, error) {
+	store, err := OpenLog()
+
+	if err != nil {
+		return false, fmt.Errorf("failed to read storage")
+	}
+
+	for _, metric := range metrics {
+		for _, item := range store.Records {
+			if item.Name == metric.Name {
+				item.Logs = append(item.Logs, Record{Value: metric.UpdatedValue, StoredAt: time.Now().Unix()})
+			}
+		}
+	}
+
+	metricsToUpdate, err := OpenMetricStore()
+	if err != nil {
+		return false, fmt.Errorf("failed to save last log time")
+	}
+
+	for _, metric := range metrics {
+		for _, item := range metricsToUpdate.Metrics {
+			if item.Name == metric.Name {
+				item.LastLog = time.Now().Unix()
+			}
+		}
+	}
+
+	return true, nil
 }
 
 /// Bootstraps storage
 /// unimplemented at the moment
 /// todo: implement
 func Init() {
-	inits := []string{`{"metrics": []}`, `{}`}
+	inits := []string{`{"metrics": []}`, `{"records": []}`}
 
 	for idx, x := range []string{"./metrics.json", "./logs.json"} {
 		if _, err := os.Stat(x); os.IsNotExist(err) {

@@ -121,8 +121,8 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 }
 
 type PartialMetric struct {
-	Name         string      `json:"name"`
-	UpdatedValue interface{} `json:"updatedValue"`
+	Name         string `json:"name"`
+	UpdatedValue string `json:"updatedValue"`
 }
 
 func Log(w http.ResponseWriter, r *http.Request) {
@@ -131,6 +131,21 @@ func Log(w http.ResponseWriter, r *http.Request) {
 	var t []PartialMetric
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&t)
+
+	_, err := SaveLog(t)
+	if err != nil {
+		switch err.Error() {
+		case "already exists":
+			w.WriteHeader(http.StatusConflict)
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+
+		fmt.Fprintf(w, `{"status":"save failed"}`)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, `{"status": "ok"}`)
+	}
 }
 
 /// Index template data
