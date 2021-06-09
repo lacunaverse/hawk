@@ -18,6 +18,7 @@ type Templates struct {
 	logs        *template.Template
 	metrics     *template.Template
 	editMetrics *template.Template
+	export      *template.Template
 	errors      *template.Template
 }
 
@@ -33,6 +34,8 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, cat strin
 		return t.metrics.ExecuteTemplate(w, name, data)
 	case "editMetrics":
 		return t.editMetrics.ExecuteTemplate(w, name, data)
+	case "export":
+		return t.export.ExecuteTemplate(w, name, data)
 	default:
 		return t.errors.ExecuteTemplate(w, name, data)
 	}
@@ -51,6 +54,7 @@ var t = &Templates{
 	logs:        template.Must(template.ParseFiles("views/layout.html", "views/logs/index.html", "views/layouts/nav.html")),
 	metrics:     template.Must(template.ParseFiles("views/layout.html", "views/metrics/index.html", "views/layouts/nav.html")),
 	editMetrics: template.Must(template.ParseFiles("views/layout.html", "views/metrics/edit.html", "views/layouts/nav.html")),
+	export:      template.Must(template.ParseFiles("views/layout.html", "views/export/index.html", "views/layouts/nav.html")),
 	errors:      template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
 }
 
@@ -229,8 +233,17 @@ func Log(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func ExportView(w http.ResponseWriter, r *http.Request) {
+	t.Render(w, "index.html", "", "export")
+}
+
+func ExportData(w http.ResponseWriter, r *http.Request) {
+	t.Render(w, "index.html", "", "export")
+}
+
 /// Index template data
 type IndexData struct {
+	Time         string
 	Date         string
 	NeedsLogging []Metric
 	Error        string
@@ -244,6 +257,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	day := time.Day()
 
 	date := fmt.Sprintf("%s, %v %s", weekday, day, month)
+	var suf string
+
+	if time.Hour() >= 12 {
+		suf = "pm"
+	} else {
+		suf = "am"
+	}
+
+	formattedTime := fmt.Sprintf("%v:%v %s", time.Hour(), time.Minute(), suf)
 
 	metrics, err := OpenMetricStore()
 
@@ -273,7 +295,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	t.Render(w, "index.html", IndexData{Date: date, NeedsLogging: needsLogging}, "index")
+	t.Render(w, "index.html", IndexData{Date: date, NeedsLogging: needsLogging, Time: formattedTime}, "index")
 }
 
 func main() {
@@ -289,8 +311,8 @@ func main() {
 	r.HandleFunc("/metrics", Metrics).Methods("GET")
 	r.HandleFunc("/metrics/new", NewMetric).Methods("POST")
 	r.HandleFunc("/metrics/edit/{name}", EditMetric).Methods("GET")
-	r.HandleFunc("/export", Metrics).Methods("GET")
-	r.HandleFunc("/export", Metrics).Methods("POST")
+	r.HandleFunc("/export", ExportView).Methods("GET")
+	r.HandleFunc("/export", ExportData).Methods("POST")
 
 	r.NotFoundHandler = NotFound{}
 	log.Fatal(http.ListenAndServe(":8000", r))

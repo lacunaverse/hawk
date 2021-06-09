@@ -7,7 +7,11 @@
 {{define "content"}}
 <div>
     <h1>Metrics</h1>
-    <h2>Your Metrics</h2>
+    <nav>
+        <a href="#metrics">Your Metrics</a>
+        <a href="#new-metric">New Metric</a>
+    </nav>
+    <h2 id="metrics">Your Metrics</h2>
     {{if .Metrics.Metrics}}
     <!-- todo: implement -->
     <label for="search-box">Search metrics <a href="">?</a></label>
@@ -41,7 +45,7 @@
     <p>{{.Error}}</p>
     {{end}}
 
-    <h2>Add a New Metric</h2>
+    <h2 id="new-metric">Add a New Metric</h2>
     <noscript>JavaScript is required to submit a new metric.</noscript>
     <form>
         <label for="metric-name">Name <a href="">?</a></label>

@@ -1,0 +1,19 @@
+{{define "static"}}
+<script src="/static/scripts/metrics-edit.js" defer type="module"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/metrics.css" />
+{{end}}
+
+{{template "layout" .}}
+{{define "content"}}
+<div>
+    <h1>Export Data</h1>
+    <p>Export all your Hawk data.</p>
+    <label for="format">Select the format you want to export data in</label>
+    <select id="format">
+        <option selected>JSON</option>
+        <option disabled>CSV</option>
+        <option disabled>Plaintext</option>
+    </select>
+    <input disabled type="button" value="Export Data" />
+</div>
+{{end}}

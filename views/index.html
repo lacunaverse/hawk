@@ -6,6 +6,7 @@
 {{define "content"}}
 <div>
     <h1>{{.Date}}</h1>
+    <p>at {{.Time}}</p>
     {{if .NeedsLogging}}
     <label for="search-box">Search logs <a href="">?</a></label>
     <input type="search" placeholder="Running, :bool, etc." id="search-box" />
