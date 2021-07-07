@@ -17,5 +17,7 @@
         "test": "jest",
         "build": "node ./build.ts"
     },
-    "dependencies": {}
+    "dependencies": {
+        "chart.js": "^2.6.0"
+    }
 }

@@ -1,6 +1,6 @@
 # hawk
 
-get a bird's eye view of you
+`get a bird's eye view of you`
 
 a tool for [quantified-self](https://en.wikipedia.org/wiki/Quantified_self)
 
@@ -9,11 +9,12 @@ Hawk is a tool to log data about yourself and make informed decisions off of it.
 ## Roadmap
 
 + API
-+ main functionality
 + exporting data
 + viewing data
+  + pretty-printed dates rather than unix time
   + data diffing (variance between intervals)
   + comparisons, ranges
++ combine into single binary
 
 ## Setup
 
@@ -25,6 +26,8 @@ Requirements:
 + [go](https://golang.org/)
 
 Running:
+
+`go run .`
 
 ## Terminology
 
@@ -52,6 +55,8 @@ They have three criteria:
   + can be a true/false value, number, or text
 + a frequency, to determine how often a metric should be logged (daily, monthly, etc.)
 + optionally, a validator (regex)
+
+## API
 
 ## Credits
 

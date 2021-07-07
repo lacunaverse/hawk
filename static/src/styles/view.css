@@ -1,0 +1,20 @@
+.tab {
+    font-size: 11pt;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: 0.5rem;
+    margin: 0 2% 0 0;
+    background-color: var(--purple-dimmed);
+    color: var(--purple);
+
+    border-radius: var(--border-radius);
+    border: 1px solid var(--purple);
+
+    cursor: pointer;
+}
+
+.focused,
+.tab:hover {
+    background-color: var(--purple);
+    color: var(--primary);
+}

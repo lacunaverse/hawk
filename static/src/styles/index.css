@@ -1,33 +1,53 @@
 :root {
     --yellow: #ffc02c;
+    --orange: #ff7250;
+
+    --green-dimmed: #15ffb61a;
     --green: #15ffb6;
+
     --blue: #15d3ff;
+    --light-blue: #659bd3;
+
     --mid-blue: #5086ff;
+
+    --dark-blue-dimmed: #155eff1a;
     --dark-blue: #155eff;
+
+    --purple-dimmed: #b615ff1a;
     --purple: #b615ff;
+
     --red: #ff155e;
 
+    --dark-zero: #111111;
     --dark-one: #141414;
     --dark-two: #212121;
     --dark-three: #3a3a3a;
     --dark-four: #474747;
+    --dark-five: #464646;
 
-    --light-one: #eee;
-    --light-two: #d5d5d5;
-    --light-three: #c8c8c8;
-    --light-four: #7a7a7a;
+    --light-one: #ededed;
+    --light-two: #e0e0e0;
+    --light-three: #d4d4d4;
+    --light-four: #7b7b7b;
+
+    --border-small: 1px;
+    --border-normal: 2px;
+    --border-large: 6px;
+    --border-radius: 4px;
 
     --highlight: var(--blue);
     --highlight-dark: var(--purple);
+
+    --headings-text: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --body-text: Arial, Helvetica, sans-serif;
 
     --primary: var(--light-one);
     --secondary: var(--dark-one);
     --tertiary: var(--dark-two);
     --quaternary: var(--light-two);
-    --quinary: var(--dark-four);
+    --quinary: var(--light-four);
     --senary: var(--light-three);
 }
-
 @media (prefers-color-scheme: dark) {
     :root {
         --primary: var(--dark-one);
