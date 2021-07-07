@@ -19,6 +19,7 @@ type Templates struct {
 	metrics     *template.Template
 	editMetrics *template.Template
 	export      *template.Template
+	view        *template.Template
 	errors      *template.Template
 }
 
@@ -36,6 +37,8 @@ func (t *Templates) Render(w io.Writer, name string, data interface{}, cat strin
 		return t.editMetrics.ExecuteTemplate(w, name, data)
 	case "export":
 		return t.export.ExecuteTemplate(w, name, data)
+	case "view":
+		return t.view.ExecuteTemplate(w, name, data)
 	default:
 		return t.errors.ExecuteTemplate(w, name, data)
 	}
@@ -55,6 +58,7 @@ var t = &Templates{
 	metrics:     template.Must(template.ParseFiles("views/layout.html", "views/metrics/index.html", "views/layouts/nav.html")),
 	editMetrics: template.Must(template.ParseFiles("views/layout.html", "views/metrics/edit.html", "views/layouts/nav.html")),
 	export:      template.Must(template.ParseFiles("views/layout.html", "views/export/index.html", "views/layouts/nav.html")),
+	view:        template.Must(template.ParseFiles("views/layout.html", "views/view/index.html", "views/layouts/nav.html")),
 	errors:      template.Must(template.ParseFiles("views/layout.html", "views/errors/404.html", "views/layouts/nav.html")),
 }
 
@@ -108,8 +112,8 @@ func EditMetric(w http.ResponseWriter, r *http.Request) {
 }
 
 type MetricResponse struct {
-	Metrics MetricList
-	Error   string
+	Metrics MetricList `json:"metrics"`
+	Error   string     `json:"error"`
 }
 
 func Metrics(w http.ResponseWriter, r *http.Request) {
@@ -125,7 +129,22 @@ func Metrics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t.Render(w, "index.html", MetricResponse{Metrics: metrics}, "metrics")
+	content := r.Header.Get("content-type")
+
+	if content == "application/json" {
+		w.Header().Add("content-type", "application/json")
+		json, err := json.Marshal(MetricResponse{Metrics: metrics})
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprintf(w, `{"status": "something went wrong"}`)
+			return
+		}
+
+		fmt.Fprint(w, string(json))
+	} else {
+		t.Render(w, "index.html", MetricResponse{Metrics: metrics}, "metrics")
+	}
+
 }
 
 type ViewLatestResponse struct {
@@ -233,6 +252,10 @@ func Log(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func ViewData(w http.ResponseWriter, r *http.Request) {
+	t.Render(w, "index.html", "", "view")
+}
+
 func ExportView(w http.ResponseWriter, r *http.Request) {
 	t.Render(w, "index.html", "", "export")
 }
@@ -313,6 +336,7 @@ func main() {
 	r.HandleFunc("/metrics/edit/{name}", EditMetric).Methods("GET")
 	r.HandleFunc("/export", ExportView).Methods("GET")
 	r.HandleFunc("/export", ExportData).Methods("POST")
+	r.HandleFunc("/view", ViewData).Methods("GET")
 
 	r.NotFoundHandler = NotFound{}
 	log.Fatal(http.ListenAndServe(":8000", r))

@@ -5,8 +5,7 @@
 {{template "layout" .}}
 {{define "content"}}
 <div>
-    <h1>{{.Date}}</h1>
-    <p>at {{.Time}}</p>
+    <h1>{{.Date}} <span style="font-size:12pt;">{{.Time}}</span></h1>
     {{if .NeedsLogging}}
     <label for="search-box">Search logs <a href="">?</a></label>
     <input type="search" placeholder="Running, :bool, etc." id="search-box" />
@@ -26,7 +25,7 @@
             {{end}}
         </tbody>
     </table>
-    <input type="button" value="Save" id="save-btn" />
+    <input type="button" value="Save" id="save-btn" disabled />
     <div class="results"></div>
     {{else}}
     <p>Nothing to log right now. Check back later!</p>

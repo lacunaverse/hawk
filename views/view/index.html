@@ -1,0 +1,12 @@
+{{define "static"}}
+<script src="/static/scripts/view.js" defer type="module"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/view.css" />
+{{end}}
+
+{{template "layout" .}}
+{{define "content"}}
+<div>
+    <div id="tabs"></div>
+    <canvas id="data" width="600" height="400"></canvas>
+</div>
+{{end}}
